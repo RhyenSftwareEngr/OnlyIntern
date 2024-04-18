@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400');
+
+body {
+  font-family: 'Poppins';
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Poppins';
+  font-weight: 700;
+}
+
+html {font-size: 100%;} /* 16px */
+
+h1 {font-size: 4.210rem; /* 67.36px */}
+
+h2 {font-size: 3.158rem; /* 50.56px */}
+
+h3 {font-size: 2.369rem; /* 37.92px */}
+
+h4 {font-size: 1.777rem; /* 28.48px */}
+
+h5 {font-size: 1.333rem; /* 21.28px */}
+
+p, span {font-size: 1.000rem; /* 16px */}
+
+small {font-size: 0.750rem; /* 12px */}
+
+/* Not Final Color Pallete */
+:root {
+    --text: #1e1e1e;
+    --background: #ffffff;
+    --background-alt: #f7f7f7;
+    --primary: #415d5d;
+    --secondary: #eae1e1;
+    --accent: #699696;
+    --errors: rgb(237, 91, 91);
+
+    --transition1: ease-in;
+    --transition2: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+* {
+    margin: 0;
+}
+
+body {
+    background-image: url("../assets/login-background.jpg");
+    background-size: cover;
+}
+
+.login-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(31, 31, 31, 0.3);
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    padding: 48px 32px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-container > img {
+    height: 48px;
+    width: 48px;
+    padding: 16px;
+}
+
+.title-container > h4{
+    padding: 0px 16px;
+}
+
+.title-container > p {
+    padding: 12px 16px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+#user-id, #user-password {
+    width: 350px;
+    background-color: rgba(31, 31, 31, 0);
+    border: 2px solid var(--text);
+    border-radius: 10px;
+    font-size: 1rem;
+    padding: 12px;
+    margin: 16px;
+}
+
+.forgot-password{
+    color: var(--text);
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 16px;
+}
+
+#login-btn {
+    width: 360px;
+    align-self: center;
+    color: var(--background);
+    background-color: var(--accent);
+    border: 0px solid var(--text);
+    border-radius: 50px;
+    font-size: 1rem;
+    padding: 12px;
+    margin: 48px 16px 16px 16px;
+    cursor: pointer;
+    transition: all 150ms var(--transition1);
+}
+
+#login-btn:hover {
+    box-shadow: 0 3px 10px rgba(31, 31, 31, 0.2);
+    scale: 1.01;
+}
+
+.error {
+    color: var(--errors);
+}

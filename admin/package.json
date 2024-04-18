@@ -1,0 +1,35 @@
+{
+  "name": "9374-webdev-final-ojt-management-application",
+  "version": "1.0.0",
+  "description": "OJT Management Application",
+  "main": "./admin/index.js",
+  "directories": {
+    "lib": "admin"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "start": "git",
+    "url": "git+https://gitlab.com/2222101/9374-webdev-final-ojt-management-application.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/2222101/9374-webdev-final-ojt-management-application/issues"
+  },
+  "homepage": "https://gitlab.com/2222101/9374-webdev-final-ojt-management-application#readme",
+  "dependencies": {
+    "argon2": "^0.31.2",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.3",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

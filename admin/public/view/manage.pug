@@ -1,0 +1,252 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Manage Students | OnlyInterns
+    link(rel='stylesheet', href='../css/manage.css')
+    script.
+      var data = !{JSON.stringify(data)};
+  body
+    #dimmer
+    #update-validation(style=`display: ${validation.display}; pointer-events: ${validation.pEvents};`)
+      svg#update-validation-close(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24')
+        path(d='M21,0l-9,9l-9-9l-3,3l9,9l-9,9l3,3l9-9l9,9l3-3l-9-9l9-9L21,0z')
+      #update-validation-text #{validation.msg}
+    #stud-info-panel 
+      svg#close-btn(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24')
+        path(d='M21,0l-9,9l-9-9l-3,3l9,9l-9,9l3,3l9-9l9,9l3-3l-9-9l9-9L21,0z')
+      .panel-left-wrapper
+        img#stud-pf-panel
+        .stud-info-header-wrapper
+          h5#name-header
+          h5#company-header
+          h5#adviser-header
+          form(action="/manage/remarks", method="POST").remark-form
+            label.remark-label(for="studRemark") Remark
+              svg#enable-remark-btn(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' onclick="toggleRemarkBtn()")
+                path(d='M20.26.15l3.59,3.59L21.12,6.47,17.53,2.89ZM7.12,16.88h3.59l8.71-8.72L15.84,4.58,7.12,13.29Z' transform='translate(-1.14 -0.15)')
+                path(d='M20.28,20.47H3.53V3.72h8.19l2.39-2.39H3.53A2.39,2.39,0,0,0,1.14,3.72V20.47a2.39,2.39,0,0,0,2.39,2.39H20.28a2.39,2.39,0,0,0,2.39-2.39V10.1l-2.39,2.39Z' transform='translate(-1.14 -0.15)')
+            input#remark-input(type="text", name="studRemark" readonly)
+            input#invi-studid-input(type="text", name="studIdInvi" readonly)
+            input#submit-remark-btn(type="submit", value="Done")
+      .panel-right-wrapper
+        #stud-info-nav
+          span.stud-info-nav-links.active#info-nav Student Information
+          span.stud-info-nav-links#req-nav Requirements 
+          span.stud-info-nav-links#report-nav Progress Report
+          #line
+        form(action="/manage/edit", method="POST").panel-content#info-content
+          svg#enable-edit-btn(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' onclick="toggleEditBtn()")
+            path(d='M20.26.15l3.59,3.59L21.12,6.47,17.53,2.89ZM7.12,16.88h3.59l8.71-8.72L15.84,4.58,7.12,13.29Z' transform='translate(-1.14 -0.15)')
+            path(d='M20.28,20.47H3.53V3.72h8.19l2.39-2.39H3.53A2.39,2.39,0,0,0,1.14,3.72V20.47a2.39,2.39,0,0,0,2.39,2.39H20.28a2.39,2.39,0,0,0,2.39-2.39V10.1l-2.39,2.39Z' transform='translate(-1.14 -0.15)')
+          h5.info-content-header Student Information
+            label.info-content-label(for="firstName") First Name
+              input.input-disable#fname-input(type="text", name="firstName" disabled)
+            label.info-content-label(for="middleName") Middle Name
+              input.input-disable#mname-input(type="text", name="middleName" disabled)
+            label.info-content-label(for="lastName") Last Name
+              input.input-disable#lname-input(type="text", name="lastName" disabled)
+            label.info-content-label(for="gender") Gender
+              input.input-disable#gender-input(type="text", name="gender" disabled)
+          h5.info-content-header School Information
+            label.info-content-label(for="studentID") Student ID
+              input#studID-input(type="text", name="studentID" readonly)
+            label.info-content-label(for="courseYear") Course and Year
+              input.input-disable#courseYear-input(type="text", name="courseYear" disabled)
+            label.info-content-label(for="classCode") Classcode
+              input.input-disable#classcode-input(type="text", name="classCode" disabled)
+            label.info-content-label(for="advisor") Advisor
+              select.input-disable#advisor-input(type="text", name="advisor" disabled)
+                each adviser in advisers
+                  option(value=`${adviser.admin_id}`) #{adviser.first_name} #{adviser.last_name}
+            label.info-content-label(for="advContactInfo1") Advisor Contacts
+              .info-content-contacts
+                input#advContact1-input(type="text", name="advContactInfo1" disabled)
+                input#advContact2-input(type="text", name="advContactInfo2" disabled)
+                input#advContact3-input(type="text", name="advContactInfo3" disabled)
+          h5.info-content-header Company Information
+            label.info-content-label(for="supervisor") Supervisor
+              select.input-disable#supervisor-input(type="text", name="supervisor" disabled)
+                each superviser in supervisers
+                  option(value=`${superviser.sup_id}`) #{superviser.first_name} #{superviser.last_name}
+            label.info-content-label(for="contactInfo") Supervisor Contacts
+              .info-content-contacts
+                input#supContact1-input(type="text", name="supContactInfo1" disabled)
+                input#supContact2-input(type="text", name="supContactInfo2" disabled)
+                input#supContact3-input(type="text", name="supContactInfo3" disabled)
+            label.info-content-label(for="company") Company
+              select#company-input(type="text", name="company" disabled)
+                each company in companies
+                  option(value=`${company.comp_id}`) #{company.company_name}
+            label.info-content-label(for="compAddress") Address
+              input#compAddress-input(type="text", name="compAddress" disabled)
+            label.info-content-label(for="compPhone") Phone
+              input#compPhone-input(type="text", name="compPhone" disabled)
+            label.info-content-label(for="compEmail") Email
+              input#compEmail-input(type="text", name="compEmail" disabled)
+          input#submit-edit-btn(type="submit", value="Done")
+        .panel-content#req-content
+          h5 Requirements
+          .req-title
+            p MOA
+            p Medical Certificate 
+            p Waiver
+            p NBI Clearance
+            p Birth Certificate 
+            p Acceptance Form
+            p Recommendation Letter
+            p Resume
+            p Cover Letter 
+            p Transcript of Records
+          .req-status
+            p#moa
+            p#medical
+            p#waiver
+            p#nbi-clearance
+            p#birth-certificate
+            p#acceptance-form
+            p#recommendation-letter
+            p#resume
+            p#cover-letter
+            p#tor
+        .panel-content#report-content
+            h5 Calendar
+
+    .sidebar
+      .logo-container-wrapper
+        a.logo-container(href='/home')
+          img(src='../assets/logo/onlyinterns-logo.png', alt='logo')
+          h5 OnlyInterns
+      ul.sidebar-ul
+        li.sidebar-li
+          a.side-menus(href='/home')
+            svg.bx.bx-dashboard(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 24 24')
+              path(d='M4 13h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1zm-1 7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v4zm10 0a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7zm1-10h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1z')
+              span Dashboard            
+        li.sidebar-li
+          a.side-menus(href='/manage').active
+            svg.bx.bx-dashboard(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 24 24')
+              path(d='M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z')
+              path(d='M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm0-6c1.103 0 2 .897 2 2s-.897 2-2 2-2-.897-2-2 .897-2 2-2zm1.5 7H8c-3.309 0-6 2.691-6 6v1h2v-1c0-2.206 1.794-4 4-4h3c2.206 0 4 1.794 4 4v1h2v-1c0-3.309-2.691-6-6-6z') 
+              span Manage Students           
+        li.sidebar-li
+          a.side-menus(href='/logout')
+            svg.bx.bx-dashboard(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 24 24')
+              path(d='M16 13v-2H7V8l-5 4 5 4v-3z')
+              path(d='M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z') 
+              span Logout
+    nav
+      svg#menu-icon(xmlns='http://www.w3.org/2000/svg', width='32px', height='32px', viewBox='0 0 24 24')
+        path#menu-path(d='M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z')
+      span.name-container #{username}
+    main
+      .col1Flex
+        form#formname.filter-container(action="/manage/filter", method="POST")
+          .filter-card
+            .search-header
+              h5 Search
+            .seach-container
+              input#search-bar(type="search", name="searchQuery")
+          .filter-card
+            .filter-header
+              h5 Filters
+            .line-break
+            .filter-advisers
+              span Adviser
+              ul.filter-ul
+                each adviser in advisers
+                  li.filter-li
+                    label
+                      input.checkbox.adviser-cb(type="checkbox" name="adviser" value=`${adviser.email}` onclick="onlyOne(this)")
+                      | #{adviser.first_name} #{adviser.last_name}
+            .line-break
+            .filter-reqs
+              span Requirements
+              ul.filter-ul
+                each requirement in requirements
+                  li.filter-li
+                    label
+                      input.checkbox(type="checkbox" name="requirements" value=`${requirement.column_values}`)
+                      | #{requirement.column_names}
+            .line-break
+            .filter-hours
+              span Hours
+              .hours-slider-container
+                .range-container
+                  .sliders-control
+                    input#fromSlider(type='range', value=`${min_value}`, min='0', max='2000' name="min")
+                    input#toSlider(type='range', value=`${max_value}`, min='0', max='2000' name="max")
+                  .form-control
+                    .form-control-container
+                      p.form-control-container-time.min Min
+                      p#fromInput.min #{min_value}
+                    .form-control-container
+                      p.form-control-container-time.max Max
+                      p#toInput.max #{max_value}
+            .line-break
+            .submit-btn
+              input#submit-filter-btn(type='submit' value='filter')
+        .filter-card
+          .addStudent-header
+            h5 Add Student
+          .line-break
+          .add-student-button
+            button#openPopup Add Student
+
+        // The overlay
+        .overlay#overlay
+
+        // The popup container
+        .popup#popupContainer
+          .popup-content
+            form.add-student-form(action='/api/addStudent', method='post')
+              label(for='studentId') Student ID
+              input(type='number', id='studentId', name='studentId', required)
+
+              label(for='firstName') First Name
+              input(type='text', id='firstName', name='firstName', required)
+
+              label(for='middleName') Middle Name
+              input(type='text', id='middleName', name='middleName')
+
+              label(for='lastName') Last Name
+              input(type='text', id='lastName', name='lastName', required)
+
+              label(for='courseYear') Course & Year
+              input(type='text', id='courseYear', name='courseYear', required)
+
+              label(for='classCode') Class Code
+              input(type='text', id='classCode', name='classCode', required)
+
+              label Gender
+              select(id='gender', name='gender', required)
+                option(value='M') Male
+                option(value='F') Female
+
+              label(for='advisor') Advisor
+              select(type='text', id='advisor', name='advisor' required)
+
+              label(for='remark') Remark
+              input(type='text' id='remark', name='remark')
+
+              input#submit-add-btn(type='submit' value='Add Student')
+
+            .popup-buttons
+              button#closePopup Cancel 
+                
+      .searched-content
+        ul#parent
+          .stud-info-wrapper
+            .left-wrapper
+              h5 Student Name
+            .right-wrapper   
+              h5 Hours Rendered
+
+
+    script(src='../js/sidebar.js')
+    script(src='../js/slider.js')
+    script(src='../js/checkbox.js')
+    script(src='../js/search_filter.js')
+    script(src='../js/validation_message.js')
+    script(src='../js/remark.js')
